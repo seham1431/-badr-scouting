@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#075b48">
+<title>تحدي فك العقد الكشفية | ثانوية بدر الأولى</title>
+<style>
+:root{--green:#075b48;--blue:#174b78;--gold:#e4b63e;--pale:#f4f8f3;--ink:#18332d}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(145deg,#eaf3ed,#f8f6e9);color:var(--ink)}
+header{background:linear-gradient(120deg,var(--green),var(--blue));color:white;text-align:center;padding:32px 18px 38px;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;width:260px;height:260px;border:2px solid #ffffff24;border-radius:50%;left:-70px;top:-130px}
+.badge{display:inline-block;border:1px solid #ffffff80;border-radius:30px;padding:7px 15px;font-size:13px;margin-bottom:13px}
+h1{font-size:clamp(27px,5vw,43px);margin:5px 0 12px;color:#fff}
+header p{margin:6px auto;max-width:650px;line-height:1.9;color:#f2f7f4}
+.school{font-weight:bold;color:#ffe7a0;margin-top:15px}
+main{max-width:980px;margin:-18px auto 40px;padding:0 16px;position:relative}
+.panel{background:white;border-radius:22px;padding:22px;box-shadow:0 12px 35px #12372b18;margin-bottom:18px}
+.intro{text-align:center;line-height:1.9}
+button{font:inherit;cursor:pointer;border:0;border-radius:13px;padding:12px 20px;background:var(--green);color:white;font-weight:bold;transition:.2s}
+button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.gold{background:var(--gold);color:#263b31}
+.progress-wrap{height:11px;background:#e8eee9;border-radius:20px;overflow:hidden;margin:12px 0}
+#progress{height:100%;width:0;background:linear-gradient(90deg,var(--green),#62a77a);transition:.35s}
+.progress-label{display:flex;justify-content:space-between;font-size:14px;color:#53665e}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.knot{border:1px solid #dce8df;border-radius:18px;padding:17px;text-align:center;background:#fbfdfb}
+.knot .rope{font-size:38px;line-height:1.4}
+.knot h3{margin:5px 0;color:var(--green)}
+.knot p{font-size:14px;line-height:1.7;color:#63736c;min-height:46px}
+.knot button{width:100%}
+.knot.done{background:#f0f8ee;border-color:#8ebc91}
+.knot.done .rope{filter:grayscale(.5)}
+.hidden{display:none!important}
+#questionTitle{color:var(--green);margin-top:0}
+.question{font-size:19px;line-height:1.8;font-weight:bold}
+.answers{display:grid;gap:10px;margin:18px 0}
+.answer{background:#f3f7f3;color:var(--ink);border:1px solid #d9e5dc;text-align:right}
+.answer.correct{background:#e3f4e4;border-color:#4c9a5b}
+.answer.wrong{background:#fff0e9;border-color:#d98c6d}
+.feedback{min-height:30px;font-weight:bold;line-height:1.8}
+footer{text-align:center;padding:20px;color:#65756e;font-size:13px;line-height:1.8}
+.final{text-align:center}
+.final .star{font-size:55px}
+.final h2{color:var(--green)}
+.small{font-size:13px;color:#687970}
+@media(max-width:520px){.panel{padding:17px}.knot p{min-height:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">نشاط كشفي تفاعلي • اليوم العالمي للتسامح</div>
+  <h1>🪢 تحدّي فكّ العُقَد الكشفية</h1>
+  <p>ست عقد… وست قيم نبني بها بيئة يسودها الاحترام والتعاون والسلام.<br>اختاري العقدة، وتأمّلي الموقف، ثم اختاري التصرف الأفضل.</p>
+  <div class="school">ثانوية بدر الأولى بالرياض</div>
+  <div>قائدة الكشافة: سهام العتيبي</div>
+</header>
+<main>
+  <section class="panel intro" id="welcome">
+    <h2>هل أنتِ مستعدة للتحدّي؟</h2>
+    <p>أجيبي عن المواقف الستة لتفكّي العقدة تلو الأخرى. تذكّري: القائدة الكشفية تجعل من الاختلاف فرصة للفهم، ومن التسامح قوة.</p>
+    <button class="gold" onclick="startChallenge()">ابدئي التحدّي</button>
+  </section>
+  <section class="panel hidden" id="game">
+    <div class="progress-label"><span>إنجازك في التحدّي</span><strong id="count">٠ من ٦</strong></div>
+    <div class="progress-wrap"><div id="progress"></div></div>
+    <div class="grid" id="knots"></div>
+  </section>
+  <section class="panel hidden" id="quiz">
+    <h2 id="questionTitle"></h2>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <button id="continue" class="gold hidden" onclick="closeQuestion()">العودة إلى العقد</button>
+  </section>
+  <section class="panel final hidden" id="finish">
+    <div class="star">🏅</div>
+    <h2>أحسنتِ يا قائدة المستقبل!</h2>
+    <p>لقد فككتِ جميع العقد، وأثبتِّ أن التسامح والاحترام والتعاون قيم تصنع فريقًا قويًا.</p>
+    <h3>«بالتسامح نرتقي، وبالأخوة الكشفية نبني مجتمعًا يسوده السلام»</h3>
+    <button onclick="location.reload()">إعادة التحدّي</button>
+  </section>
+</main>
+<footer>إعداد وتنفيذ: قائدة الكشافة / سهام العتيبي<br>ثانوية بدر الأولى بالرياض</footer>
+<script>
+const data=[
+ {name:"عقدة التسامح",desc:"كيف نتعامل مع الخطأ؟",q:"أخطأت زميلتك في حقك ثم اعتذرت بصدق. ما التصرف الذي يعكس التسامح؟",a:["أرفض الحديث معها دائمًا","أقبل اعتذارها وأمنحها فرصة","أنشر ما حدث بين الطالبات"],c:1,why:"قبول الاعتذار يمنح العلاقة فرصة جديدة، مع الحفاظ على الاحترام."},
+ {name:"عقدة احترام الآخرين",desc:"الاحترام أساس الفريق.",q:"تتحدث زميلة برأي مختلف عن رأيك أثناء النقاش. ماذا تفعلين؟",a:["أقاطعها وأستهزئ برأيها","أستمع إليها باحترام ثم أعرض رأيي","أطلب منها ألا تشارك"],c:1,why:"نحترم حق الآخرين في التعبير، حتى عندما نختلف معهم."},
+ {name:"عقدة تقبّل الاختلاف",desc:"اختلافنا يثري فريقنا.",q:"انضمت طالبة جديدة تختلف عن بقية المجموعة في اهتماماتها. ما المبادرة الأفضل؟",a:["أرحب بها وأشركها في النشاط","أتركها وحدها حتى تتأقلم","أطلب من الجميع تجاهل اختلافها"],c:0,why:"التنوع يضيف خبرات وأفكارًا جديدة إلى الفريق."},
+ {name:"عقدة نبذ التنمّر",desc:"الكلمة الطيبة تصنع الأمان.",q:"سمعتِ مجموعة تسخر من زميلة. ما الموقف السليم؟",a:["أضحك معهم","أشارك المقطع","أرفض السخرية وأساند زميلتي وأطلب المساعدة عند الحاجة"],c:2,why:"مواجهة التنمر بأمان وطلب دعم شخص موثوق يحمي الجميع."},
+ {name:"عقدة التعاون",desc:"يدٌ واحدة لا تصفق.",q:"تأخر إنجاز فريقك، وبعض العضوات أنهين مهامهن. ماذا تفعلن؟",a:["نتعاون لمساندة من تأخرن","نلومهن أمام الجميع","نترك العمل غير مكتمل"],c:0,why:"التعاون وتوزيع الجهد يساعدان الفريق على النجاح."},
+ {name:"عقدة العفو والإحسان",desc:"القوة في حسن التصرف.",q:"حدث خلاف بسيط بينك وبين زميلة خلال نشاط كشفي. كيف تنهين الموقف؟",a:["أزيد الخلاف وأرفع صوتي","أتحاور بهدوء وأبحث عن حل يرضينا","أمتنع عن المشاركة في الأنشطة"],c:1,why:"الحوار الهادئ والبحث عن حل مشترك يعززان روح الأخوة."}
+];
+let solved=new Set(), current=0;
+const arabic=n=>String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+function startChallenge(){document.getElementById('welcome').classList.add('hidden');document.getElementById('game').classList.remove('hidden');render()}
+function render(){
+ const host=document.getElementById('knots');host.innerHTML='';
+ data.forEach((item,i)=>{
+  const done=solved.has(i), card=document.createElement('article');card.className='knot'+(done?' done':'');
+  card.innerHTML=`<div class="rope">${done?'✨':'🪢'}</div><h3>${item.name}</h3><p>${done?'تم فك العقدة بنجاح':item.desc}</p><button ${done?'disabled':''} onclick="openQuestion(${i})">${done?'تم الحل':'افتحي العقدة'}</button>`;
+  host.appendChild(card);
+ });
+ document.getElementById('count').textContent=arabic(solved.size)+' من ٦';
+ document.getElementById('progress').style.width=(solved.size/6*100)+'%';
+ if(solved.size===6){document.getElementById('game').classList.add('hidden');document.getElementById('finish').classList.remove('hidden')}
+}
+function openQuestion(i){
+ current=i;const item=data[i];
+ document.getElementById('quiz').classList.remove('hidden');
+ document.getElementById('questionTitle').textContent=item.name;
+ document.getElementById('question').textContent=item.q;
+ document.getElementById('feedback').textContent='';
+ document.getElementById('continue').classList.add('hidden');
+ const host=document.getElementById('answers');host.innerHTML='';
+ item.a.forEach((answer,j)=>{
+  const b=document.createElement('button');b.className='answer';b.textContent=answer;
+  b.onclick=()=>checkAnswer(j,b);host.appendChild(b);
+ });
+ document.getElementById('quiz').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function checkAnswer(choice,button){
+ const item=data[current], buttons=[...document.querySelectorAll('.answer')];
+ buttons.forEach(b=>b.disabled=true);
+ if(choice===item.c){
+  button.classList.add('correct');document.getElementById('feedback').textContent='إجابة رائعة! '+item.why;
+  solved.add(current);document.getElementById('continue').classList.remove('hidden');
+ }else{
+  button.classList.add('wrong');buttons[item.c].classList.add('correct');
+  document.getElementById('feedback').textContent='حاولي التفكير في الخيار الذي يعزز الاحترام والتسامح. '+item.why;
+  const retry=document.createElement('button');retry.textContent='حاولي مرة أخرى';retry.style.marginTop='8px';retry.onclick=()=>openQuestion(current);
+  document.getElementById('feedback').appendChild(document.createElement('br'));
+  document.getElementById('feedback').appendChild(retry);
+ }
+}
+function closeQuestion(){document.getElementById('quiz').classList.add('hidden');render();document.getElementById('game').scrollIntoView({behavior:'smooth',block:'start'})}
+</script>
+</body>
+</html>
